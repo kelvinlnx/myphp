@@ -25,21 +25,16 @@ if ($server_ip == $servername) {
 } else {
     $conn = getDbConnection();
 
-    // Check if both environment variables are set
-    $env_var1 = getenv('ENV_VAR1');
-    $env_var2 = getenv('ENV_VAR2');
-    $envVarsSet = ($env_var1 !== false && $env_var2 !== false);
-
     // Display environment variables if set
-    if ($envVarsSet) {
+    if ($config['env_msg'] !== false && $config['env_value1'] !== false) {
         echo '<h2>Environment Variables</h2>';
         echo '<table>';
         echo '<tr><th>Environment Variable</th><th>Value</th></tr>';
-        echo '<tr><td>' . safe_output('ENV_VAR1') . '</td><td>' . safe_output($env_var1) . '</td></tr>';
-        echo '<tr><td>' . safe_output('ENV_VAR2') . '</td><td>' . safe_output($env_var2) . '</td></tr>';
+        echo '<tr><td>' . safe_output('MSG') . '</td><td>' . safe_output($config['env_msg']) . '</td></tr>';
+        echo '<tr><td>' . safe_output('VALUE1') . '</td><td>' . safe_output($config['env_value1']) . '</td></tr>';
         echo '</table>';
     } else {
-        echo '<p class="warning">Environment variables ENV_VAR1 and ENV_VAR2 are not both set. Unable to display environment variables.</p>';
+        echo '<p class="warning">Environment variables MSG and VALUE1 are not set. Unable to display environment variables.</p>';
     }
 
     // Check if the 'users' table exists
