@@ -14,8 +14,11 @@ function getRandomCharacter($characters) {
     return $characters[array_rand($characters)];
 }
 
+// Load configuration
+$config = include(__DIR__ . '/../config/config.php');
+$servername = $config['db_host'];
+
 // Database operations
-$servername = "MYSERVER";
 $server_ip = gethostbyname($servername);
 
 if ($server_ip == $servername) {
