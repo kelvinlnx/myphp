@@ -32,13 +32,21 @@ if ($server_ip == $servername) {
         echo '<table>';
         echo '<tr><th>Environment Variable</th><th>Value</th></tr>';
         echo '<tr><td>' . safe_output('MSG') . '</td>';
-        if ($config['env_msg'] == false ) {
+        if ($config['env_msg'] !== false ) {
             echo '<td>' . safe_output($config['env_msg']) . '</td>';
         } else {
-            echo ''
+            echo '<td class="warning">Warning: ' . safe_output('MSG') . ' is not set!</td>';
         }
         echo '</tr>';
-        echo '<tr><td>' . safe_output('VALUE1') . '</td><td>' . safe_output($config['env_value1']) . '</td></tr>';
+        
+        echo '<tr><td>' . safe_output('VALUE1') . '</td>';
+        if ($config['env_value1'] !== false ) {
+            echo '<td>' . safe_output($config['env_value1']) . '</td>';
+        } else {
+            echo '<td class="warning">Warning: ' . safe_output('VALUE1') . ' is not set!</td>';
+        }    
+        echo '</tr>';
+        
         echo '</table>';
     } else {
         echo '<p class="warning">Environment variables MSG and VALUE1 are not set. Unable to display environment variables.</p>';
