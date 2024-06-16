@@ -2,7 +2,6 @@
 // query.php
 
 include(__DIR__ . '/../includes/db.php');
-include(__DIR__ . '/../includes/db_functions.php');
 
 // Load configuration
 $config = include(__DIR__ . '/../config/config.php');
