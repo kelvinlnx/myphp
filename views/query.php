@@ -1,10 +1,8 @@
 <?php
-include(__DIR__ . '/../includes/db.php');
+// query.php
 
-// Function to safely output variables
-function safe_output($value) {
-    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-}
+include(__DIR__ . '/../includes/db.php');
+include(__DIR__ . '/../includes/db_functions.php');
 
 // Load configuration
 $config = include(__DIR__ . '/../config/config.php');
@@ -16,26 +14,17 @@ echo '<tr><th>Server Name</th><td>' . safe_output(gethostname()) . '</td></tr>';
 echo '<tr><th>Server IP Address</th><td>' . safe_output($_SERVER['SERVER_ADDR']) . '</td></tr>';
 echo '</table>';
 
-
 // Display environment variables if set
 echo '<h2>Environment Variables</h2>';
-if ($config['env_msg'] !== false || $config['env_value1'] !== false) {
+if (isset($config['env_msg'], $config['env_value1'])) {
     echo '<table>';
     echo '<tr><th>Environment Variable</th><th>Value</th></tr>';
     echo '<tr><td>' . safe_output('MSG') . '</td>';
-    if ($config['env_msg'] !== false ) {
-        echo '<td>' . safe_output($config['env_msg']) . '</td>';
-    } else {
-        echo '<td class="warning">Warning: ' . safe_output('MSG') . ' is not set!</td>';
-    }
+    echo '<td>' . safe_output($config['env_msg']) . '</td>';
     echo '</tr>';
     
     echo '<tr><td>' . safe_output('VALUE1') . '</td>';
-    if ($config['env_value1'] !== false ) {
-        echo '<td>' . safe_output($config['env_value1']) . '</td>';
-    } else {
-        echo '<td class="warning">Warning: ' . safe_output('VALUE1') . ' is not set!</td>';
-    }    
+    echo '<td>' . safe_output($config['env_value1']) . '</td>';
     echo '</tr>';
     
     echo '</table>';
@@ -44,10 +33,10 @@ if ($config['env_msg'] !== false || $config['env_value1'] !== false) {
 }
 
 // Database operations
+echo '<h2>Database Operations</h2>';
 $servername = $config['db_host'];
 
-echo '<h2>Database Query</h2>';
-if ($servername == false) {
+if (!$servername) {
     echo '<p class="warning">Database connection info not provided!</p>';
     echo '<p class="warning">Did you set the environment variables (DB_HOST, DB_NAME, DB_USER and DB_PASS)?</p>';
 } elseif ($servername == gethostbyname($servername)) {
@@ -56,31 +45,54 @@ if ($servername == false) {
     $conn = getDbConnection();
 
     // Check if the 'users' table exists
-    $table_exists = $conn->query("SHOW TABLES LIKE 'users'")->num_rows > 0;
+    $table_exists = tableExists($conn, 'users');
 
-    if ($table_exists) {
-        // Fetch data from the 'users' table
-        $sql = "SELECT id, user, age FROM users";
-        $result = $conn->query($sql);
-
-        echo '<h2>Data from Database</h2>';
-        if ($result->num_rows > 0) {
-            echo '<table>';
-            echo '<tr><th>ID</th><th>User</th><th>Age</th></tr>';
-            while($row = $result->fetch_assoc()) {
-                echo '<tr>';
-                echo '<td>' . safe_output($row["id"]) . '</td>';
-                echo '<td>' . safe_output($row["user"]) . '</td>';
-                echo '<td>' . safe_output($row["age"]) . '</td>';
-                echo '</tr>';
+    // Handle form submissions
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        if (isset($_POST['generate_data'])) {
+            // Generate or clear table based on existence
+            if ($table_exists) {
+                truncateUsersTable($conn);
+            } else {
+                createUsersTable($conn);
+                $table_exists = true;
             }
-            echo '</table>';
-        } else {
-            echo '<p class="warning">No data found in table users</p>';
+
+            // Insert 3 to 8 random records
+            insertRandomRecords($conn, rand(3, 8));
+        } elseif (isset($_POST['clear_table'])) {
+            // Clear table if it exists
+            if ($table_exists) {
+                truncateUsersTable($conn);
+            } else {
+                echo '<p class="warning">Table "users" does not exist.</p>';
+            }
+        } elseif (isset($_POST['delete_table'])) {
+            // Delete table if it exists
+            if ($table_exists) {
+                deleteUsersTable($conn);
+                $table_exists = false;
+            } else {
+                echo '<p class="warning">Table "users" does not exist.</p>';
+            }
         }
-    } else {
-        echo '<p class="warning">Table "users" does not exist.</p>';
     }
+
+    // Display data from the 'users' table if it exists
+    if ($table_exists) {
+        displayUsersTable($conn);
+    }
+
+    // Display buttons below the table
+    echo '<form method="POST">';
+    if ($table_exists) {
+        echo '<button type="submit" name="clear_table">Clear Table</button>';
+        echo ' ';
+        echo '<button type="submit" name="delete_table">Delete Table</button>';
+    }
+    echo '<br><br>';
+    echo '<button type="submit" name="generate_data">Generate Data</button>';
+    echo '</form>';
 
     $conn->close();
 }
