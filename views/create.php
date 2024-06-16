@@ -53,12 +53,19 @@ if ($server_ip == $servername) {
                 )";
                 
                 if ($conn->query($create_table_sql) === TRUE) {
-                    // Insert 3 random records with mythical character names
-                    $insert_data_sql = "INSERT INTO users (user, age) VALUES
-                        ('" . getRandomCharacter($mythical_characters) . "', " . rand(20, 50) . "),
-                        ('" . getRandomCharacter($mythical_characters) . "', " . rand(20, 50) . "),
-                        ('" . getRandomCharacter($mythical_characters) . "', " . rand(20, 50) . ")";
-                    
+                    // Generate a random number of records between 3 and 8
+                    $num_records = rand(3, 8);
+
+                    // Insert random records with mythical character names
+                    $insert_data_sql = "INSERT INTO users (user, age) VALUES ";
+                    $values = [];
+                    for ($i = 0; $i < $num_records; $i++) {
+                        $name = getRandomCharacter($mythical_characters);
+                        $age = rand(20, 50);
+                        $values[] = "('$name', $age)";
+                    }
+                    $insert_data_sql .= implode(", ", $values);
+                                        
                     if ($conn->query($insert_data_sql) === TRUE) {
                         echo '<p>Table "users" created successfully and 3 random records inserted.</p>';
                     } else {
