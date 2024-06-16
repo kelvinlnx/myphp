@@ -12,7 +12,7 @@ $config = include(__DIR__ . '/../config/config.php');
 // Display server name and IP address
 echo '<h2>Server Information</h2>';
 echo '<table>';
-echo '<tr><th>Server Name</th><td>' . safe_output($gethostname()) . '</td></tr>';
+echo '<tr><th>Server Name</th><td>' . safe_output(gethostname()) . '</td></tr>';
 echo '<tr><th>Server IP Address</th><td>' . safe_output($_SERVER['SERVER_ADDR']) . '</td></tr>';
 echo '</table>';
 
