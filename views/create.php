@@ -67,7 +67,7 @@ if ($server_ip == $servername) {
                     $insert_data_sql .= implode(", ", $values);
                                         
                     if ($conn->query($insert_data_sql) === TRUE) {
-                        echo '<p>Table "users" created successfully and 3 random records inserted.</p>';
+                        echo '<p>Table "users" created successfully and ' . $num_records . ' random records inserted.</p>';
                     } else {
                         echo '<p class="warning">Error inserting data: ' . $conn->error . '</p>';
                     }
