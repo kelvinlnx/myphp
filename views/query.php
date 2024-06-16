@@ -11,7 +11,8 @@ $config = include(__DIR__ . '/../config/config.php');
 $servername = $config['db_host'];
 
 // Database operations
-$server_ip = gethostbyname($servername);
+// $server_ip = gethostbyname($servername);
+$server_ip = gethostname($servername);
 
 // Display server name and IP address
 echo '<h2>Server Information</h2>';
@@ -26,11 +27,17 @@ if ($server_ip == $servername) {
     $conn = getDbConnection();
 
     // Display environment variables if set
-    if ($config['env_msg'] !== false && $config['env_value1'] !== false) {
+    if ($config['env_msg'] !== false || $config['env_value1'] !== false) {
         echo '<h2>Environment Variables</h2>';
         echo '<table>';
         echo '<tr><th>Environment Variable</th><th>Value</th></tr>';
-        echo '<tr><td>' . safe_output('MSG') . '</td><td>' . safe_output($config['env_msg']) . '</td></tr>';
+        echo '<tr><td>' . safe_output('MSG') . '</td>';
+        if ($config['env_msg'] == false ) {
+            echo '<td>' . safe_output($config['env_msg']) . '</td>';
+        } else {
+            echo ''
+        }
+        echo '</tr>';
         echo '<tr><td>' . safe_output('VALUE1') . '</td><td>' . safe_output($config['env_value1']) . '</td></tr>';
         echo '</table>';
     } else {
