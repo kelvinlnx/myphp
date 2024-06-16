@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $insert_data_sql = "INSERT INTO users (user, age) VALUES " . implode(", ", $values);
 
             if ($conn->query($insert_data_sql) === TRUE) {
+                $table_exists = true; // Update the table_exists flag
                 echo '<p>Table "users" created successfully and ' . $num_records . ' random records inserted.</p>';
             } else {
                 echo '<p class="warning">Error inserting data: ' . $conn->error . '</p>';
