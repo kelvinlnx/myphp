@@ -8,12 +8,11 @@ function safe_output($value) {
 
 // Load configuration
 $config = include(__DIR__ . '/../config/config.php');
-$servername = $config['db_host'];
 
 // Display server name and IP address
 echo '<h2>Server Information</h2>';
 echo '<table>';
-echo '<tr><th>Server Name</th><td>' . safe_output($_SERVER['SERVER_NAME']) . '</td></tr>';
+echo '<tr><th>Server Name</th><td>' . safe_output($gethostname()) . '</td></tr>';
 echo '<tr><th>Server IP Address</th><td>' . safe_output($_SERVER['SERVER_ADDR']) . '</td></tr>';
 echo '</table>';
 
@@ -45,13 +44,14 @@ if ($config['env_msg'] !== false || $config['env_value1'] !== false) {
 }
 
 // Database operations
-// $server_ip = gethostbyname($servername);
-$server_ip = gethostname($servername);
+$servername = $config['db_host'];
 
 echo '<h2>Database Query</h2>';
-if ($server_ip == $servername) {
-    echo '<p class="warning">The database server name "' . safe_output($servername) . '" could not be resolved. Unable to connect to the database.</p>';
+if ($servername == false) {
+    echo '<p class="warning">Database connection info not provided!</p>';
     echo '<p class="warning">Did you set the environment variables (DB_HOST, DB_NAME, DB_USER and DB_PASS)?</p>';
+} elseif ($servername == gethostbyname($servername)) {
+    echo '<p class="warning">The database server name "' . safe_output($servername) . '" could not be resolved. Unable to connect to the database.</p>';
 } else {
     $conn = getDbConnection();
 
