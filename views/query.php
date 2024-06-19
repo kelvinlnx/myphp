@@ -15,7 +15,7 @@ echo '</table>';
 
 // Display environment variables if set
 echo '<h2>Environment Variables</h2>';
-if (isset($config['env_msg'], $config['env_value1'])) {
+if ($config['env_msg'] !== false || $config['env_value1'] !== false) {
     echo '<table>';
     echo '<tr><th>Environment Variable</th><th>Value</th></tr>';
     echo '<tr><td>' . safe_output('MSG') . '</td>';
