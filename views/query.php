@@ -32,7 +32,7 @@ if ($config['env_msg'] !== false || $config['env_value1'] !== false) {
 }
 
 // Database operations
-echo '<h2>Database Operations</h2>';
+echo '<h2>Database Test</h2>';
 $servername = $config['db_host'];
 
 if (!$servername) {
