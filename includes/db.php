@@ -67,7 +67,7 @@ function displayUsersTable($conn) {
     $sql = "SELECT id, user, age FROM users";
     $result = $conn->query($sql);
 
-    echo '<h2>Data from Database</h2>';
+    //echo '<h2>Data from Database</h2>';
     if ($result->num_rows > 0) {
         echo '<table>';
         echo '<tr><th>ID</th><th>User</th><th>Age</th></tr>';
