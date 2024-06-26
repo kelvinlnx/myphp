@@ -31,6 +31,12 @@ if ($config['env_msg'] !== false || $config['env_value1'] !== false) {
     echo '<p class="warning">Environment variables MSG and VALUE1 are not set. Unable to display environment variables.</p>';
 }
 
+// Persistent Volume
+echo '<h2>Persistent Volume Test</h2>';
+echo "Contents of /opt <br>";
+$data = scandir("/opt");
+print_r($data);
+
 // Database operations
 echo '<h2>Database Test</h2>';
 $servername = $config['db_host'];
