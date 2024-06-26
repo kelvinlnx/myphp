@@ -5,12 +5,12 @@ This source code serves to demonstrate:
 3. Simple Source-to-Image(S2I) customization of the build image.
 
 Variables:
-  DB_HOST - database server ip/name
-  DB_USER - database user
-  DB_PASS - database users password
-  DB_NAME - database name
-  MSG     - simple variable
-  VALUE1  - simple variable
+- DB_HOST - database server ip/name
+- DB_USER - database user
+- DB_PASS - database users password
+- DB_NAME - database name
+- MSG     - simple variable
+- VALUE1  - simple variable
   
 Todo:
 - Implement persistent data storage through volume mapping.
