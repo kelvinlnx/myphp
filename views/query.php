@@ -35,7 +35,14 @@ if ($config['env_msg'] !== false || $config['env_value1'] !== false) {
 echo '<h2>Persistent Volume Test</h2>';
 echo "Contents of /opt <br>";
 $data = scandir("/opt");
-print_r($data);
+echo "<ul>";
+foreach($data as $item) {
+    // Skip the special directories '.' and '..'
+    if ($item != "." && $item != "..") {
+        echo "<li>" . htmlspecialchars($item) . "</li>";
+    }
+}
+echo "</ul>";
 
 // Database operations
 echo '<h2>Database Test</h2>';
