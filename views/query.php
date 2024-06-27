@@ -33,16 +33,21 @@ if ($config['env_msg'] !== false || $config['env_value1'] !== false) {
 
 // Persistent Volume
 echo '<h2>Persistent Volume Test</h2>';
-echo "Contents of /opt <br>";
-$data = scandir("/opt");
-echo "<ul>";
-foreach($data as $item) {
-    // Skip the special directories '.' and '..'
-    if ($item != "." && $item != "..") {
-        echo "<li>" . htmlspecialchars($item) . "</li>";
+echo "Contents of /opt/data <br>";
+if (is_dir($directory)) {
+    $data = scandir("/opt/data");
+
+    echo "<ul>";
+    foreach($data as $item) {
+        // Skip the special directories '.' and '..'
+        if ($item != "." && $item != "..") {
+            echo "<li>" . htmlspecialchars($item) . "</li>";
+        }
     }
+    echo "</ul>";
+} else {
+    echo "<p style='color: red;'>Warning: The directory /opt/data does not exist.</p>";
 }
-echo "</ul>";
 
 // Database operations
 echo '<h2>Database Test</h2>';
