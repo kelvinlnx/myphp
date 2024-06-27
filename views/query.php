@@ -34,7 +34,7 @@ if ($config['env_msg'] !== false || $config['env_value1'] !== false) {
 // Persistent Volume
 echo '<h2>Persistent Volume Test</h2>';
 echo "Contents of /opt/data <br>";
-if (is_dir($directory)) {
+if (is_dir("/opt/data")) {
     $data = scandir("/opt/data");
 
     echo "<ul>";
